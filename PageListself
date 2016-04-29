@@ -1,0 +1,93 @@
+
+var Common = function () {
+//总页数，每页显示记录数,当前页,总记录数,当前记录数,输出标签
+var totalpage, pagesize, cpage, count, curcount, outstr, type;
+}
+
+//初始化 
+Common.Init = function (Obj, size, genre) {
+    this.cpage = 1;
+    this.pagesize = size;
+    this.totalpage = Math.ceil(Obj / this.pagesize);
+    this.type = genre;
+    this.outstr = "";
+}
+//跳转到第几页
+Common.gotopage = function (target) {
+    this.cpage = target;        //把页面计数定位到第几页 
+    Common.setpage();
+    Common.reloadpage(target);    //ajax数据加载部分
+}
+//设置页码
+Common.setpage = function () {
+    //首页
+    if (this.totalpage == 1) {       
+        this.outstr = "<a href='javascript:void(0)' class='huise'> 首页</a>";
+    } else {
+        this.outstr = "<a href='javascript:void(0)' onclick='Common.gotopage(1)'> 首页</a>";
+    }
+   
+    //上一页
+    if (this.cpage > 1) {
+        this.outstr = this.outstr + "<a href='javascript:void(0)' onclick='Common.gotopage(" + (this.cpage - 1) + ")'> 上一页 </a>";
+    }
+    //总页数小于5页 
+    if (this.totalpage <= 5) {
+        for (this.count = 1; this.count <= this.totalpage; this.count++) {
+            if (this.count != this.cpage) {
+                this.outstr = this.outstr + "<a href='javascript:void(0)' onclick='Common.gotopage(" + this.count + ")'>" + this.count + "</a>";
+            } else {
+                this.outstr = this.outstr + "<a href='javascript:void(0)' class='ichoverc' >" + this.count + "</span>";
+            }
+        }
+        //尾页
+        if (this.totalpage == 1) {           
+            this.outstr = this.outstr + "<a href='javascript:void(0)' class='huise'>尾页</a>";
+        } else {
+            this.outstr = this.outstr + "<a href='javascript:void(0)' onclick='Common.gotopage(" + this.totalpage + ")'>尾页</a>";
+        }
+      
+    }
+    if (this.totalpage > 5) {
+    //总页数大于5页   
+       
+        if (this.cpage > 3) {
+                this.outstr = this.outstr + "<a href='javascript:void(0)' onclick='Common.gotopage(" + (this.cpage - 2) + ")'>" + (this.cpage - 2) + "</a>";
+                this.outstr = this.outstr + "<a href='javascript:void(0)' onclick='Common.gotopage(" + (this.cpage - 1) + ")'>" + (this.cpage - 1) + "</a>";
+                this.outstr = this.outstr + "<a href='javascript:void(0)' class='ichoverc'>" + this.cpage + "</a>";
+                if (this.cpage + 1 <= this.totalpage) {
+                    this.outstr = this.outstr + "<a href='javascript:void(0)' onclick='Common.gotopage(" + (this.cpage + 1) + ")'>" + (this.cpage + 1) + "</a>";
+                }
+                if (this.cpage + 2 <= this.totalpage) {
+                    this.outstr = this.outstr + "<a href='javascript:void(0)' onclick='Common.gotopage(" + (this.cpage + 2) + ")'>" + (this.cpage + 2) + "</a>";
+                }
+            }
+            else {
+                for (this.count = 1; this.count <= 5; this.count++) {
+                    if (this.count != this.cpage) {
+                        this.outstr = this.outstr + "<a href='javascript:void(0)' onclick='Common.gotopage(" + this.count + ")'>" + this.count + "</a>";
+                    } else {
+                        this.outstr = this.outstr + "<a href='javascript:void(0)' class='ichoverc'>" + this.count + "</a>";
+                    }
+                }
+        }
+        if (this.cpage <this.totalpage) {
+            this.outstr = this.outstr + "<a href='javascript:void(0)' onclick='Common.gotopage(" + (this.cpage + 1) + ")'> 下一页 </a>";
+        }
+
+        //尾页
+        this.outstr = this.outstr + "<a href='javascript:void(0)' onclick='Common.gotopage(" + this.totalpage + ")'>尾页</a>";
+
+    }
+    //提示，显示总页数
+    if (this.totalpage > 0) {
+        $("#" + this.type + "").html(this.outstr + "<div class='fyr'><span id='info'>共" + this.totalpage + "页  每页" + this.pagesize + "条" + this.cpage + "/" + this.totalpage + "<\/span><\/div>");
+    }
+    this.outstr = "";
+}
+//显示数据
+Common.reloadpage = function (target) {
+
+}
+//调用分页 
+Common.setpage();
