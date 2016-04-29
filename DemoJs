@@ -1,0 +1,40 @@
+
+//初始化函数
+$(document).ready(function () {
+    //加载数据
+    Common.reloadpage = Showdata;
+    //第一步从后台传递来总的记录数
+    $.ajax({
+
+        type: 'post',
+        url: '',//你获得数据的后台地址
+        data: '',
+        success: function (e) {
+           Common.Init(e, 16, "setpage");
+           //初始化时显示第一页
+           Common.gotopage(1);
+        }
+    });
+
+   
+});
+
+//切换到第几页
+Showdata = function (Obj) {
+  
+    //切换到第几页
+    var value = Obj;
+    //参数
+    var ajaxParams = {};
+    ajaxParams.pageindex = value;
+    ajaxParams.pagesize = 16;
+    
+    ////////
+    /*你自己需要填充的内容的部分*/
+    /////////
+}
+
+
+
+
+
